@@ -17,6 +17,7 @@ package io.tsdb.opentsdb.discoveryplugins;
 
 import net.opentsdb.tools.ArgP;
 import net.opentsdb.utils.Config;
+import net.opentsdb.utils.PluginLoader;
 import net.opentsdb.tools.StartupPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,11 +62,14 @@ public class ExecutePlugin {
     StartupPlugin startup = null;
 
     if (config.getBoolean("tsd.startup.enable")) {
-      startup = loadSpecificPlugin(
+      startup = PluginLoader.loadSpecificPlugin(
               config.getString("tsd.startup.plugin"), StartupPlugin.class);
       if (startup == null) {
-        throw new IllegalArgumentException("Unable to locate startup plugin: " +
-                config.getString("tsd.startup.plugin"));
+        startup = loadSpecificPlugin(config.getString("tsd.startup.plugin"), StartupPlugin.class);
+        if (startup == null) {
+          throw new IllegalArgumentException("Unable to locate startup plugin: " +
+                  config.getString("tsd.startup.plugin"));
+        }
       }
       try {
         startup.initialize(config);
@@ -98,8 +102,7 @@ public class ExecutePlugin {
 
     while(it.hasNext()) {
       T plugin = it.next();
-      LOG.debug("Checking " + plugin.getClass().getName() + " which is a " +  plugin.getClass().getSuperclass());
-      if (plugin.getClass().getName().equals(name) || plugin.getClass().getSuperclass().equals(name)) {
+      if (plugin.getClass().getName().toString().equals(name) || plugin.getClass().getSuperclass().getName().toString().equals(name)) {
         LOG.debug("matched!");
         return plugin;
       } else {
