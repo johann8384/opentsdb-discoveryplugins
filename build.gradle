@@ -1,0 +1,49 @@
+group 'io.tsdb.opentsdb.discoveryplugins'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+}
+
+configurations{
+    providedCompile
+    compile.extendsFrom providedCompile
+}
+
+dependencies {
+    compile group: 'com.stumbleupon', name: 'async', version: '1.4.1'
+    compile 'com.google.collections:google-collections:1.0'
+    compile 'ch.qos.logback:logback-classic:1.1.6'
+    providedCompile files('libs/tsdb-2.3.0-SNAPSHOT.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task fatJar(type: Jar, dependsOn: build) {
+    baseName = project.name + '-all'
+    manifest {
+        attributes 'Main-Class': 'io.tsdb.opentsdb.discoveryplugins.ExecutePlugin'
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it).matching {
+                exclude {
+                    it.path.contains('META-INF')
+                }
+            }
+        }
+    }
+    with jar
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.tsdb.opentsdb.discoveryplugins.ExecutePlugin'
+    }
+}
