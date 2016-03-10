@@ -86,6 +86,12 @@ public class ExecutePlugin {
     return startup;
   }
 
+  /**
+   * @param name
+   * @param type
+   * @param <T>
+   * @return
+   */
   private static <T> T loadSpecificPlugin(final String name,
                                           final Class<T> type) {
     LOG.debug("trying to find: " + name);
