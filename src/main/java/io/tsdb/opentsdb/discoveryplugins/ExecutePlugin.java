@@ -16,14 +16,15 @@ package io.tsdb.opentsdb.discoveryplugins;
  */
 
 import net.opentsdb.tools.ArgP;
-import net.opentsdb.tools.BuildData;
-import net.opentsdb.tools.StartupPlugin;
 import net.opentsdb.utils.Config;
 import net.opentsdb.utils.PluginLoader;
+import net.opentsdb.tools.StartupPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.ServiceLoader;
 
 /**
  * Created by jcreasy on 3/2/16.
@@ -33,8 +34,7 @@ public class ExecutePlugin {
   private static final short DEFAULT_FLUSH_INTERVAL = 1000;
   public static void main(String[] args) throws IOException {
     LOG.info("Starting.");
-    LOG.info(BuildData.revisionString());
-    LOG.info(BuildData.buildString());
+
     final ArgP argp = new ArgP();
 
     argp.addOption("--config", "PATH",
@@ -51,18 +51,13 @@ public class ExecutePlugin {
       config = new Config(true);
 
     StartupPlugin startup = null;
-    try {
-      startup = loadStartupPlugins(config);
-    } catch (IllegalArgumentException e) {
-      throw new RuntimeException("Initialization failed", e);
-    } catch (Exception e) {
-      throw new RuntimeException("Initialization failed", e);
-    }
+    startup = loadStartupPlugin(config);
     LOG.info(startup.version());
     LOG.info("shutting down");
     startup.shutdown();
   }
-  private static StartupPlugin loadStartupPlugins(Config config) {
+
+  private static StartupPlugin loadStartupPlugin(Config config) {
     // load the startup plugin if enabled
     StartupPlugin startup = null;
 
@@ -70,8 +65,11 @@ public class ExecutePlugin {
       startup = PluginLoader.loadSpecificPlugin(
               config.getString("tsd.startup.plugin"), StartupPlugin.class);
       if (startup == null) {
-        throw new IllegalArgumentException("Unable to locate startup plugin: " +
-                config.getString("tsd.startup.plugin"));
+        startup = loadSpecificPlugin(config.getString("tsd.startup.plugin"), StartupPlugin.class);
+        if (startup == null) {
+          throw new IllegalArgumentException("Unable to locate startup plugin: " +
+                  config.getString("tsd.startup.plugin"));
+        }
       }
       try {
         startup.initialize(config);
@@ -86,5 +84,33 @@ public class ExecutePlugin {
     }
 
     return startup;
+  }
+
+  private static <T> T loadSpecificPlugin(final String name,
+                                          final Class<T> type) {
+    LOG.debug("trying to find: " + name);
+    if (name.isEmpty()) {
+      throw new IllegalArgumentException("Missing plugin name");
+    }
+    ServiceLoader<T> serviceLoader = ServiceLoader.load(type);
+    Iterator<T> it = serviceLoader.iterator();
+
+    if (!it.hasNext()) {
+      LOG.warn("Unable to locate any plugins of the type: " + type.getName());
+      return null;
+    }
+
+    while(it.hasNext()) {
+      T plugin = it.next();
+      if (plugin.getClass().getName().toString().equals(name) || plugin.getClass().getSuperclass().getName().toString().equals(name)) {
+        LOG.debug("matched!");
+        return plugin;
+      } else {
+        LOG.debug(plugin.getClass().getName() + " and " +  plugin.getClass().getSuperclass() + " did not match: " + name);
+      }
+    }
+
+    LOG.warn("Unable to locate locate plugin: " + name);
+    return null;
   }
 }

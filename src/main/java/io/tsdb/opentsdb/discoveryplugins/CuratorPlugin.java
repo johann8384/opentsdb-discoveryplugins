@@ -30,6 +30,7 @@ public class CuratorPlugin extends StartupPlugin {
 
   @Override
   public void initialize(final Config config) throws IllegalArgumentException, Exception {
+    log.info("Apache Curator ServiceDiscovery Plugin Initialized");
     log.debug("Finished with config");
     return;
   }
