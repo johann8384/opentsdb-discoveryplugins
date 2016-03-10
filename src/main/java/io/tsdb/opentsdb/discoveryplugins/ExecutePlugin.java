@@ -61,7 +61,7 @@ public class ExecutePlugin {
     // load the startup plugin if enabled
     StartupPlugin startup = null;
 
-    if (config.getBoolean("tsd.startup.enable")) {
+//    if (config.getBoolean("tsd.startup.enable")) {
       startup = PluginLoader.loadSpecificPlugin(
               config.getString("tsd.startup.plugin"), StartupPlugin.class);
       if (startup == null) {
@@ -79,9 +79,9 @@ public class ExecutePlugin {
       LOG.info("Successfully initialized startup plugin [" +
               startup.getClass().getCanonicalName() + "] version: "
               + startup.version());
-    } else {
-      startup = null;
-    }
+//    } else {
+//      startup = null;
+//    }
 
     return startup;
   }

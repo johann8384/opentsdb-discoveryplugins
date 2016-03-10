@@ -47,3 +47,11 @@ jar {
         attributes 'Main-Class': 'io.tsdb.opentsdb.discoveryplugins.ExecutePlugin'
     }
 }
+
+task runJar(dependsOn:jar) << {
+  javaexec { main="-jar"; args = [jar.archivePath, "--config", "src/main/resources/opentsdb.conf"]}
+}
+
+task runFatJar(dependsOn:jar) << {
+  javaexec { main="-jar"; args = ['build/libs/' + project.name + '-all-' + project.version + '.jar', "--config", "src/main/resources/opentsdb.conf"]}
+}

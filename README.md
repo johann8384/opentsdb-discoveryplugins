@@ -5,7 +5,7 @@ Create a "lib" folder and put the OpenTSDB jar there.
 
 
 ```
-gradle clean; gradle fatJar; java -jar build/libs/DiscoveryPlugins-all-1.0-SNAPSHOT.jar --config src/main/resources/opentsdb.conf
+gradle clean fatJar runFatJar
 ```
 
 ```
