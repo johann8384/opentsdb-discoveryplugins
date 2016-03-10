@@ -30,7 +30,7 @@ dependencies {
 task fatJar(type: Jar, dependsOn: build) {
     baseName = project.name + '-all'
     manifest {
-        attributes 'Main-Class': 'io.tsdb.opentsdb.discoveryplugins.ExecutePlugin'
+        attributes 'Main-Class': 'io.tsdb.opentsdb.ExecutePlugin'
     }
     from {
         configurations.compile.collect {
@@ -46,7 +46,7 @@ task fatJar(type: Jar, dependsOn: build) {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'io.tsdb.opentsdb.discoveryplugins.ExecutePlugin'
+        attributes 'Main-Class': 'io.tsdb.opentsdb.ExecutePlugin'
     }
 }
 

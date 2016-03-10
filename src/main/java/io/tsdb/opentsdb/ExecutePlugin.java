@@ -1,4 +1,4 @@
-package io.tsdb.opentsdb.discoveryplugins;
+package io.tsdb.opentsdb;
 /**
  * Copyright 2015 The DiscoveryPlugins Authors
  * <p/>
