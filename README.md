@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/inst-tech/opentsdb-discoveryplugins.svg?branch=master)](https://travis-ci.org/inst-tech/opentsdb-discoveryplugins)
+
 Executable jar so you can test plugins. 
 
 
