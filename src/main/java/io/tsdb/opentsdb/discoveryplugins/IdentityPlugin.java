@@ -19,9 +19,11 @@ import net.opentsdb.core.TSDB;
 import net.opentsdb.tools.StartupPlugin;
 import net.opentsdb.stats.StatsCollector;
 import net.opentsdb.utils.Config;
+import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@MetaInfServices
 public class IdentityPlugin extends StartupPlugin {
   Logger log = LoggerFactory.getLogger(CuratorPlugin.class);
   public IdentityPlugin() {

@@ -14,6 +14,7 @@ package io.tsdb.opentsdb.discoveryplugins;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.kohsuke.MetaInfServices;
 import com.stumbleupon.async.Deferred;
 import net.opentsdb.core.TSDB;
 import net.opentsdb.tools.StartupPlugin;
@@ -22,6 +23,7 @@ import net.opentsdb.utils.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@MetaInfServices
 public class CuratorPlugin extends StartupPlugin {
   Logger log = LoggerFactory.getLogger(CuratorPlugin.class);
 
