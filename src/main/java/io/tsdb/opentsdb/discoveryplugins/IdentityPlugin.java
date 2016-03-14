@@ -15,6 +15,7 @@ package io.tsdb.opentsdb.discoveryplugins;
  * limitations under the License.
  */
 import com.stumbleupon.async.Deferred;
+import net.opentsdb.core.TSDB;
 import net.opentsdb.tools.StartupPlugin;
 import net.opentsdb.stats.StatsCollector;
 import net.opentsdb.utils.Config;
@@ -23,15 +24,23 @@ import org.slf4j.LoggerFactory;
 
 public class IdentityPlugin extends StartupPlugin {
   Logger log = LoggerFactory.getLogger(CuratorPlugin.class);
-
   public IdentityPlugin() {
     log.debug("constructor called");
   }
 
   @Override
-  public void initialize(final Config config) throws IllegalArgumentException, Exception {
+  public Config initialize(Config config) throws Exception {
     log.info("Apache Curator ServiceDiscovery Plugin Initialized");
     log.debug("Finished with config");
+    return config;
+  }
+
+  @Override
+  public void isReady(TSDB tsdb) throws Exception {
+    log.info("OpenTSDB is Ready");
+//    Config config = tsdb.getConfig();
+//    Integer port = config.getInt("tsd.network.port");
+//    log.info("OpenTSDB is listening on " + Integer.toString(port));
     return;
   }
 

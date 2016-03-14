@@ -6,13 +6,11 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import net.opentsdb.utils.Config;
+import net.opentsdb.core.TSDB;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +42,9 @@ public class IdentityPluginTest {
   private IdentityPlugin plugin;
 
   @Mock
+  private Config mockedConfig;
+
+  @Mock
   private Appender<ILoggingEvent> mockAppender;
   @Captor
   private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
@@ -58,7 +59,6 @@ public class IdentityPluginTest {
 
   @Test
   public void testInitialize() throws Exception {
-    Config mockedConfig = Mockito.mock(Config.class);
     plugin.initialize(mockedConfig);
     verify(mockAppender, times(3)).doAppend(captorLoggingEvent.capture());
     LoggingEvent loggingEvent;

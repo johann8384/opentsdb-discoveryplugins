@@ -26,12 +26,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-/**
- * Created by jcreasy on 3/2/16.
- */
 public class ExecutePlugin {
   private static Logger LOG = LoggerFactory.getLogger(ExecutePlugin.class);
   private static final short DEFAULT_FLUSH_INTERVAL = 1000;
+
   public static void main(String[] args) throws IOException {
     LOG.info("Starting.");
 
@@ -57,7 +55,7 @@ public class ExecutePlugin {
     startup.shutdown();
   }
 
-  private static StartupPlugin loadStartupPlugin(Config config) {
+  protected static StartupPlugin loadStartupPlugin(Config config) {
     // load the startup plugin if enabled
     StartupPlugin startup = null;
 
@@ -92,8 +90,8 @@ public class ExecutePlugin {
    * @param <T>
    * @return
    */
-  private static <T> T loadSpecificPlugin(final String name,
-                                          final Class<T> type) {
+  protected static <T> T loadSpecificPlugin(final String name,
+                                            final Class<T> type) {
     LOG.debug("trying to find: " + name);
     if (name.isEmpty()) {
       throw new IllegalArgumentException("Missing plugin name");
