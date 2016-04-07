@@ -1,4 +1,4 @@
-package io.tsdb.opentsdb.discoveryplugins;
+package io.tsdb.opentsdb.discovery;
 /**
  * Copyright 2015 The openfoo Authors
  * <p/>
@@ -14,25 +14,24 @@ package io.tsdb.opentsdb.discoveryplugins;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.kohsuke.MetaInfServices;
 import com.stumbleupon.async.Deferred;
 import net.opentsdb.core.TSDB;
 import net.opentsdb.tools.StartupPlugin;
 import net.opentsdb.stats.StatsCollector;
 import net.opentsdb.utils.Config;
+import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @MetaInfServices
-public class CuratorPlugin extends StartupPlugin {
+public class IdentityPlugin extends StartupPlugin {
   Logger log = LoggerFactory.getLogger(CuratorPlugin.class);
-
-  public CuratorPlugin() {
+  public IdentityPlugin() {
     log.debug("constructor called");
   }
 
   @Override
-  public Config initialize(Config config) throws IllegalArgumentException, Exception {
+  public Config initialize(Config config) throws Exception {
     log.info("Apache Curator ServiceDiscovery Plugin Initialized");
     log.debug("Finished with config");
     return config;
@@ -41,7 +40,9 @@ public class CuratorPlugin extends StartupPlugin {
   @Override
   public void isReady(TSDB tsdb) throws Exception {
     log.info("OpenTSDB is Ready");
-    log.info("OpenTSDB is listening on " + tsdb.getConfig().getInt("tsd.network.port"));
+//    Config config = tsdb.getConfig();
+//    Integer port = config.getInt("tsd.network.port");
+//    log.info("OpenTSDB is listening on " + Integer.toString(port));
     return;
   }
 
