@@ -1,4 +1,4 @@
-package io.tsdb.opentsdb.authplugins;
+package io.tsdb.opentsdb.authentication;
 // This file is part of OpenTSDB.
 // Copyright (C) 2010-2012  The OpenTSDB Authors.
 //
